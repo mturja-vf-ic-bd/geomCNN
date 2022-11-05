@@ -4,14 +4,15 @@ ARG GROUP_ID
 
 RUN apt-get update && apt-get install -y python3 python3-distutils python3-pip python3-apt
 
-RUN addgroup --gid $GROUP_ID mturja
-RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID mturja
-USER mturja
+RUN addgroup --gid $GROUP_ID user
+RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID user
+USER user
 
-ENV HOME=/home/mturja
-RUN chmod 777 /home/mturja
+ENV HOME=/home/user
+RUN chown -R $USER "$Turja_HOME" $HOME
 
-RUN mkdir -p $HOME/geomCNN
-COPY requirements.txt $HOME/geomCNN/
+RUN mkdir $HOME/geomCNN
+COPY requirements.txt $HOME/geomCNN
 WORKDIR $HOME/geomCNN
 RUN pip3 install -r requirements.txt
+ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python

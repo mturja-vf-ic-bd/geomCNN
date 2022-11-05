@@ -37,6 +37,10 @@ class SimpleCNN(nn.Module):
             nn.Linear(64, n_classes)
         )
 
+    def weight_reset(self, m):
+        if isinstance(m, Convolution) or isinstance(m, nn.Linear) or isinstance(m, nn.PReLU):
+            m.reset_parameters()
+
     def forward(self, x):
         out = self.mxpool(self.conv1(x))
         out = self.mxpool(self.conv2(out))
